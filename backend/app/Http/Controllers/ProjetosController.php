@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Projetos;
+use App\Models\Tarefas;
 
 class ProjetosController extends Controller
 {
@@ -35,10 +36,14 @@ class ProjetosController extends Controller
     public function consultar($id)
     {
         // where('created_by', auth()->id() - consultando apenas projetos que este usuário logado e autenticado criou. Depos será possível consultar também projetos em que o usuário é integrante
-        $projeto = Projetos::where('id', $id)->where('created_by', auth()->id())->first();
+        $projeto = Projetos::select('id', 'nome', 'prioridade', 'status')->where('id', $id)->where('created_by', auth()->id())->first();
+
 
         if ($projeto == null)
             return response('Erro, projeto não localizado', 404);
+
+        // trazendo as tarefas
+        $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status')->where('id_projeto', $projeto->id)->get();
 
         return response('Projeto: ' . $projeto, 200);
     }
@@ -84,6 +89,10 @@ class ProjetosController extends Controller
             $projeto->pontos = $request->pontos;
         if (isset($request->pontos))
             $projeto->nome = $request->nome;
+        if (isset($request->status))
+            $projeto->status = $request->status;
+        if (isset($request->prioridade))
+            $projeto->prioridade = $request->prioridade;
 
         $projeto->updated_by = auth()->id();
         $projeto->save();
