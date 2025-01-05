@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\ProjetosController;
+use App\Http\Controllers\TarefasController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,16 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/deletar/{id}', [ProjetosController::class, 'deletar']); // deleta um usuario
         Route::patch('/editarUmaInformacao/{id}', [ProjetosController::class, 'editarUmaInforacao']); // cedita um usuario
         Route::post('/filtrar', [ProjetosController::class, 'filtrar']); // filtra todos
+    });
+
+    // Rotas para as terefas
+    Route::prefix('tarefas')->group(function () {
+        Route::post('/criar', [TarefasController::class, 'criar']);
+        Route::get('/consultar/{id}', [TarefasController::class, 'consultar']); // consultar individualmente
+        Route::get('/listar', [TarefasController::class, 'listar']); // listar todos
+        Route::delete('/deletar/{id}', [TarefasController::class, 'deletar']); // deleta um usuario
+        Route::patch('/editarUmaInformacao/{id}', [TarefasController::class, 'editarUmaInforacao']); // cedita um usuario
+        Route::post('/filtrar', [TarefasController::class, 'filtrar']); // filtra todos
     });
 });
 
