@@ -121,7 +121,7 @@ class UsuariosController extends Controller
     }
 
     // filtrar dados dos usuários
-    public function filtrar()
+    public function filtrar(Request $request)
     {
         // para escrever o select, para somar as condições
         $usuario = User::whereRaw('1=1');
@@ -130,16 +130,16 @@ class UsuariosController extends Controller
             $usuario->where('created_by', $request->created_by);
         }
 
-        if (isset($request->email)) {
-            $usuario->where('email', 'leke', "%$request->email%");
+        if (isset($request->name)) {
+            $usuario->where('name', 'like', "%$request->name%");
         }
 
         if (isset($request->email)) {
-            $usuario->where('name', 'leke', "%$request->name%");
+            $usuario->where('email', 'like', "%$request->email%");
         }
 
-        $usuario = $usuario->post();
+        $usuario = $usuario->get();
 
-        return response($usuario, 200);
+        return response('Dados filtrados: ' . $usuario, 200);
     }
 }
