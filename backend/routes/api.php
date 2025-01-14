@@ -21,12 +21,13 @@ use App\Http\Controllers\TarefasController;
 
 
 Route::post('login', [UsuariosController::class, 'login']);
+Route::middleware('auth:api')->get('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:api')->group(function () {
 
     // Rotas para o login
     Route::post('logout', [AuthController::class, 'logout']);
-    Route::post('me', [AuthController::class, 'me'])->middleware('auth:api');
+    Route::get('me', [AuthController::class, 'me'])->middleware('auth:api');
 
     Route::prefix('usuarios')->group(function () {
         Route::post('/criar', [UsuariosController::class, 'criar']);
