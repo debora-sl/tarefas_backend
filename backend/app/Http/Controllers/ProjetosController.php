@@ -3,20 +3,39 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use DateTime;
 
 use App\Models\Projetos;
 use App\Models\Tarefas;
 
 class ProjetosController extends Controller
 {
+    // para converter as datas
+    public static function javascriptDateToPhpDate($data)
+    {
+        if ($data == null)
+            return null;
+
+        $date = new DateTime($data);
+        $date->setTimezone(new \DateTimeZone('America/Fortaleza'));
+        $date->modify('+3 hours');
+
+        return $date;
+    }
+
     // criar projeto
     public function criar(Request $request)
     {
         $projeto = new Projetos();
         $projeto->nome = $request->nome;
         $projeto->descricao = $request->descricao;
-        $projeto->dataDeInicio = $request->dataDeInicio;
-        $projeto->dataDeConclusao = $request->dataDeConclusaoe;
+
+        if (isset($request->dataDeInicio))
+            $projeto->dataDeInicio = static::javascriptDateToPhpDate($request->dataDeInicio);
+
+        if (isset($request->dataDeConclusao))
+            $projeto->dataDeConclusao = static::javascriptDateToPhpDate($request->dataDeConclusao);
+
         $projeto->pontos = $request->pontos;
         $projeto->created_by = auth()->id();
 
