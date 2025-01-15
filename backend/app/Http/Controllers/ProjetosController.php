@@ -55,7 +55,7 @@ class ProjetosController extends Controller
     public function consultar($id)
     {
         // where('created_by', auth()->id() - consultando apenas projetos que este usuário logado e autenticado criou. Depos será possível consultar também projetos em que o usuário é integrante
-        $projeto = Projetos::select('id', 'nome', 'prioridade', 'status')->where('id', $id)->where('created_by', auth()->id())->first();
+        $projeto = Projetos::select('id', 'nome', 'descricao', 'dataDeInicio', 'dataDeConclusao', 'pontos', 'prioridade', 'status')->where('id', $id)->where('created_by', auth()->id())->first();
 
 
         if ($projeto == null)
@@ -64,16 +64,18 @@ class ProjetosController extends Controller
         // trazendo as tarefas
         $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status')->where('id_projeto', $projeto->id)->get();
 
-        return response('Projeto: ' . $projeto, 200);
+        return response()->json($projeto, 200);
     }
 
     // lista todos os projetos
     public function listar()
     {
         // where('created_by', auth()->id() - listando apenas todos projetos que este usuário logado e autenticado criou.
-        $projeto = Projetos::where('created_by', auth()->id())->get();
+        // Obtém todos os projetos criados pelo usuário autenticado
+        $projetos = Projetos::where('created_by', auth()->id())->get();
 
-        return response('Projetos: ' . $projeto, 200);
+        // Retorna os projetos como JSON
+        return response()->json($projetos, 200);
     }
 
     // deletar um usuário
