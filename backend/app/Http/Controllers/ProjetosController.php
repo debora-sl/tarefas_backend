@@ -42,7 +42,7 @@ class ProjetosController extends Controller
         // setando para que não seja null para não dar erro ao cadastrar
         if (isset($request->prioridade))
             $projeto->prioridade = $request->prioridade;
-        if (isset($request->prioridade))
+        if (isset($request->status))
             $projeto->status = $request->status;
 
         $projeto->save();
