@@ -100,18 +100,19 @@ class ProjetosController extends Controller
 
         if (isset($request->nome))
             $projeto->nome = $request->nome;
+
         if (isset($request->descricao))
             $projeto->descricao = $request->descricao;
+
         if (isset($request->dataDeInicio))
-            $projeto->dataDeInicio = $request->dataDeInicio;
-        if (isset($request->nome))
-            $projeto->dataDeConclusao = $request->dataDeConclusao;
+            $projeto->dataDeInicio = static::javascriptDateToPhpDate($request->dataDeInicio);
+
         if (isset($request->dataDeConclusao))
-            $projeto->pontos = $request->pontos;
+            $projeto->dataDeConclusao = static::javascriptDateToPhpDate($request->dataDeConclusao);
+
         if (isset($request->pontos))
-            $projeto->nome = $request->nome;
-        if (isset($request->status))
-            $projeto->status = $request->status;
+            $projeto->pontos = $request->pontos;
+
         if (isset($request->prioridade))
             $projeto->prioridade = $request->prioridade;
 
