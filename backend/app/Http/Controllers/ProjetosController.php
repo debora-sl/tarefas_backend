@@ -62,7 +62,7 @@ class ProjetosController extends Controller
             return response('Erro, projeto não localizado', 404);
 
         // trazendo as tarefas
-        $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status')->where('id_projeto', $projeto->id)->get();
+        $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status', 'created_at')->where('id_projeto', $projeto->id)->get();
 
         return response()->json($projeto, 200);
     }
