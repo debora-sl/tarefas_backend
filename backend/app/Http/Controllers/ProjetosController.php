@@ -47,7 +47,7 @@ class ProjetosController extends Controller
 
         $projeto->save();
 
-        return response('Projeto criado ' . $projeto, 201);
+        return response()->json(['id' => $projeto->id], 201);
     }
 
 

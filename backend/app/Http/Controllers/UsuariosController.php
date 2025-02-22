@@ -92,7 +92,7 @@ class UsuariosController extends Controller
 
         $usuario->name = $request->name;
         $usuario->email = $request->email;
-        $usuario->password = $request->password;
+        $usuario->password = bcrypt($request->password);
         $usuario->updated_by = auth()->id();
         $usuario->save();
 
@@ -112,7 +112,7 @@ class UsuariosController extends Controller
             $usuario->email = $request->email;
 
         if (isset($request->password))
-            $usuario->password = $request->password;
+            $usuario->password = bcrypt($request->password);
 
         $usuario->updated_by = auth()->id();
         $usuario->save();
