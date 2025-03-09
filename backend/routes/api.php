@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\UsuariosController;
+use App\Http\Controllers\UsuariosFotosController;
 use App\Http\Controllers\ProjetosController;
 use App\Http\Controllers\TarefasController;
 
@@ -37,6 +38,11 @@ Route::middleware('auth:api')->group(function () {
         Route::put('/editar/{id}', [UsuariosController::class, 'editar']); // cedita um usuario
         Route::patch('/editarUmaInformacao/{id}', [UsuariosController::class, 'editarUmaInforacao']); // cedita um usuario
         Route::post('/filtrar', [UsuariosController::class, 'filtrar']); // filtra todos
+    });
+
+    // Rotas para as fotos dos usuários
+    Route::prefix('fotos')->group(function () {
+        Route::post('/salvarFoto', [UsuariosFotosController::class, 'salvarFoto']);
     });
 
     // Rotas para os projetos
