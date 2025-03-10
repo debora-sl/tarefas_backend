@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ArquivosController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
@@ -63,6 +64,17 @@ Route::middleware('auth:api')->group(function () {
         Route::delete('/deletar/{id}', [TarefasController::class, 'deletar']); // deleta um usuario
         Route::patch('/editarUmaInformacao/{id}', [TarefasController::class, 'editarUmaInforacao']); // cedita um usuario
         Route::post('/filtrar', [TarefasController::class, 'filtrar']); // filtra todos
+    });
+
+    // Rotas para as terefas
+    Route::prefix('arquivos')->group(function () {
+        Route::post('/salvarArquivo', [ArquivosController::class, 'salvarArquivo']);
+        Route::get('/baixarArquivo/{id}', [ArquivosController::class, 'download']);
+        Route::delete('/deletarArquivo/{id}', [ArquivosController::class, 'deletar']);
+        //Route::get('/listar', [ArquivosController::class, 'listar']); // listar todos
+        //Route::delete('/deletar/{id}', [ArquivosController::class, 'deletar']); // deleta um usuario
+        //Route::patch('/editarUmaInformacao/{id}', [ArquivosController::class, 'editarUmaInforacao']); // cedita um usuario
+        //Route::post('/filtrar', [ArquivosController::class, 'filtrar']); // filtra todos
     });
 });
 
