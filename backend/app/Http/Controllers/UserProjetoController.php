@@ -10,19 +10,22 @@ class UserProjetoController extends Controller
     // função para cadastrar usuarioProjeto
     public function cadastrar(Request $request)
     {
+
         $userProjeto = new UserProjeto();
         $userProjeto->id_projeto = $request->id_projeto;
-        $userProjeto->id_user = auth()->id();
+        $userProjeto->id_user =  $request->id_user;
+
         $userProjeto->save();
+
 
         return response('UserProjeto criado: ', 201);
     }
 
     // função para deletar usuarioProjeto
-    public function deletar($id)
+    public function deletar($projeto, $user)
     {
-        $userProjeto = UserProjeto::where('id_projeto', $id)
-            ->where('id_user', auth()->id())
+        $userProjeto = UserProjeto::where('id_projeto', $projeto)
+            ->where('id_user', $user)
             ->delete();
 
         return response('UserProjeto deletado: ', 200);

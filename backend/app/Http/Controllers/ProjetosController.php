@@ -7,6 +7,7 @@ use DateTime;
 
 use App\Models\Projetos;
 use App\Models\Tarefas;
+use App\Models\User;
 use App\Models\UserProjeto;
 
 class ProjetosController extends Controller
@@ -63,7 +64,18 @@ class ProjetosController extends Controller
             return response('Erro, projeto não localizado', 404);
 
         // trazendo as tarefas
-        $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status', 'created_at')->where('id_projeto', $projeto->id)->get();
+        $projeto->tarefas = Tarefas::select('id', 'nome', 'prioridade', 'status', 'created_at')
+            ->where('id_projeto', $projeto->id)
+            ->get();
+
+        // trazendo os colaboradores
+        // Obtendo apenas os IDs dos usuários vinculados ao projeto
+        $colaboradoresIds = UserProjeto::where('id_projeto', $id)->pluck('id_user'); // pluck('id_user') extrai um array simples de IDs dos colaboradores.
+
+        // Consultando os usuários com base nesses IDs
+        $projeto->colaboradores = User::select('id', 'name', 'email')
+            ->whereIn('id', $colaboradoresIds)
+            ->get();
 
         return response()->json($projeto, 200);
     }
