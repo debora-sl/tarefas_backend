@@ -7,6 +7,7 @@ use DateTime;
 
 use App\Models\Projetos;
 use App\Models\Tarefas;
+use App\Models\UserProjeto;
 
 class ProjetosController extends Controller
 {
@@ -70,9 +71,16 @@ class ProjetosController extends Controller
     // lista todos os projetos
     public function listar()
     {
+        // pegando os projetos compartilhados entre os usuário
+        $projetosCompartilhados = UserProjeto::select('id_projeto')
+            ->where('id_user', auth()->id())
+            ->get();
+
         // where('created_by', auth()->id() - listando apenas todos projetos que este usuário logado e autenticado criou.
-        // Obtém todos os projetos criados pelo usuário autenticado
-        $projetos = Projetos::where('created_by', auth()->id())->get();
+        // Obtém todos os projetos criados pelo usuário autenticado. orWhereIn vai buscar os projetos compartilhados
+        $projetos = Projetos::where('created_by', auth()->id())
+            ->orWhereIn('id', $projetosCompartilhados)
+            ->get();
 
         // Retorna os projetos como JSON
         return response()->json($projetos, 200);

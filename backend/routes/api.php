@@ -9,6 +9,7 @@ use App\Http\Controllers\UsuariosController;
 use App\Http\Controllers\UsuariosFotosController;
 use App\Http\Controllers\ProjetosController;
 use App\Http\Controllers\TarefasController;
+use App\Http\Controllers\UserProjetoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,7 @@ use App\Http\Controllers\TarefasController;
 
 
 Route::post('login', [UsuariosController::class, 'login']);
+Route::post('usuarios/usuarioCadastrar', [UsuariosController::class, 'usuarioCadastrar']); // rota não atenticada
 Route::middleware('auth:api')->get('/logout', [AuthController::class, 'logout']);
 
 Route::middleware('auth:api')->group(function () {
@@ -66,15 +68,17 @@ Route::middleware('auth:api')->group(function () {
         Route::post('/filtrar', [TarefasController::class, 'filtrar']); // filtra todos
     });
 
-    // Rotas para as terefas
+    // Rotas para colabooradores
+    Route::prefix('userProjeto')->group(function () {
+        Route::post('/cadastrar', [UserProjetoController::class, 'cadastrar']);
+        Route::delete('/deletar/{id}', [UserProjetoController::class, 'deletar']); // deleta um usuario
+    });
+
+    // Rotas para as arquivos
     Route::prefix('arquivos')->group(function () {
         Route::post('/salvarArquivo', [ArquivosController::class, 'salvarArquivo']);
         Route::get('/baixarArquivo/{id}', [ArquivosController::class, 'download']);
         Route::delete('/deletarArquivo/{id}', [ArquivosController::class, 'deletar']);
-        //Route::get('/listar', [ArquivosController::class, 'listar']); // listar todos
-        //Route::delete('/deletar/{id}', [ArquivosController::class, 'deletar']); // deleta um usuario
-        //Route::patch('/editarUmaInformacao/{id}', [ArquivosController::class, 'editarUmaInforacao']); // cedita um usuario
-        //Route::post('/filtrar', [ArquivosController::class, 'filtrar']); // filtra todos
     });
 });
 
