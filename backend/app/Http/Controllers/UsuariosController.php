@@ -7,8 +7,28 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Http\Request;
 use App\Models\User;
 
+
 class UsuariosController extends Controller
 {
+    // criar novos usuário não atenticados
+    public function usuarioCadastrar(Request $request)
+    {
+        // checa se e-mail já existe
+        $usuarioQTD = User::where('email', $request->email)->count();
+
+        if ($usuarioQTD > 0)
+            return response('Conflito', 409);
+
+        $usuario = new User;
+        $usuario->name = $request->name;
+        $usuario->email = $request->email;
+        $usuario->password = bcrypt($request->password);
+        $usuario->created_by = 0;
+        $usuario->save();
+
+        return response('Usuário: ' . $usuario, 201);
+    }
+
     // criar usuario
     public function criar(Request $request)
     {
@@ -111,7 +131,7 @@ class UsuariosController extends Controller
         if (isset($request->email))
             $usuario->email = $request->email;
 
-        if (isset($request->password))
+        if (isset($request->password) && $request->password != '')
             $usuario->password = bcrypt($request->password);
 
         $usuario->updated_by = auth()->id();
