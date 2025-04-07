@@ -71,7 +71,7 @@ Route::middleware('auth:api')->group(function () {
     // Rotas para colabooradores
     Route::prefix('userProjeto')->group(function () {
         Route::post('/cadastrar', [UserProjetoController::class, 'cadastrar']);
-        Route::delete('/deletar/{id}', [UserProjetoController::class, 'deletar']); // deleta um usuario
+        Route::delete('/deletar/{projeto}/{usuario}', [UserProjetoController::class, 'deletar']); // deleta um usuario
     });
 
     // Rotas para as arquivos
