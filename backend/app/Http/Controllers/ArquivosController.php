@@ -33,7 +33,7 @@ class ArquivosController extends Controller
 
             return response('Arquivo salvo: ' . $arquivoBd, 201);
         } else {
-            return response('Erro: ' . 422);
+            return response()->json(['erro' => 'Nenhum arquivo foi enviado'], 422); // ajustado
         }
     }
 
